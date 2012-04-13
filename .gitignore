@@ -1,0 +1,46 @@
+.DS_Store
+
+dsa_priv.pem
+
+*.mode1
+*.mode1v3
+*.mode2v3
+*.perspective
+*.perspectivev3
+*.pbxuser
+*.xcuserdatad
+*.xcworkspacedata
+*.xcuserstate
+.LSOverride
+
+VersionX-revision.h
+
+build/
+Build/
+*.[oa]
+
+.hg
+.svn
+CVS
+
+*~.nib
+*.swp
+*~
+*(Autosaved).rtfd/
+
+Backup[ ]of[ ]*.pages/
+Backup[ ]of[ ]*.key/
+Backup[ ]of[ ]*.numbers/
+
+*.timemachine.supported
+
+Archives/*droplet.app
+Archives/*.ipa
+Design/*.png
+
+build/*
+Releases/build-*
+*.pbxuser
+*.mode1v3
+*.perspectivev3
+DerivedData/*

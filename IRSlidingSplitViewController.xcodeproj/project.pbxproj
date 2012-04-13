@@ -1,0 +1,230 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		FF2CD0211538AD1E00EC1063 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF2CCFEC1538A1CB00EC1063 /* Foundation.framework */; };
+		FF2CD02B1538AD4F00EC1063 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF2CCFEA1538A1CB00EC1063 /* UIKit.framework */; };
+		FF2CD02C1538AD4F00EC1063 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF2CCFEE1538A1CB00EC1063 /* CoreGraphics.framework */; };
+		FF2CD06A1538AF4B00EC1063 /* IRSlidingSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF2CD0021538A20A00EC1063 /* IRSlidingSplitViewController.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		FF2CCFEA1538A1CB00EC1063 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		FF2CCFEC1538A1CB00EC1063 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		FF2CCFEE1538A1CB00EC1063 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		FF2CD0011538A20A00EC1063 /* IRSlidingSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IRSlidingSplitViewController.h; path = IRSlidingSplitViewController/IRSlidingSplitViewController.h; sourceTree = "<group>"; };
+		FF2CD0021538A20A00EC1063 /* IRSlidingSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IRSlidingSplitViewController.m; path = IRSlidingSplitViewController/IRSlidingSplitViewController.m; sourceTree = "<group>"; };
+		FF2CD0241538AD1E00EC1063 /* IRSlidingSplitViewController-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "IRSlidingSplitViewController-Prefix.pch"; path = "IRSlidingSplitViewController/IRSlidingSplitViewController-Prefix.pch"; sourceTree = "<group>"; };
+		FF2CD0581538AEDF00EC1063 /* libIRSlidingSplitViewController.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libIRSlidingSplitViewController.a; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		FF2CD01D1538AD1E00EC1063 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FF2CD0211538AD1E00EC1063 /* Foundation.framework in Frameworks */,
+				FF2CD02B1538AD4F00EC1063 /* UIKit.framework in Frameworks */,
+				FF2CD02C1538AD4F00EC1063 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		FF2CCFDB1538A1CB00EC1063 = {
+			isa = PBXGroup;
+			children = (
+				FF2CD0011538A20A00EC1063 /* IRSlidingSplitViewController.h */,
+				FF2CD0021538A20A00EC1063 /* IRSlidingSplitViewController.m */,
+				FF2CD0241538AD1E00EC1063 /* IRSlidingSplitViewController-Prefix.pch */,
+				FF2CCFE91538A1CB00EC1063 /* Frameworks */,
+				FF2CD05B1538AEF100EC1063 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		FF2CCFE91538A1CB00EC1063 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				FF2CCFEA1538A1CB00EC1063 /* UIKit.framework */,
+				FF2CCFEC1538A1CB00EC1063 /* Foundation.framework */,
+				FF2CCFEE1538A1CB00EC1063 /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		FF2CD05B1538AEF100EC1063 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FF2CD0581538AEDF00EC1063 /* libIRSlidingSplitViewController.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		FF2CD01E1538AD1E00EC1063 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		FF2CD01F1538AD1E00EC1063 /* IRSlidingSplitViewController */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FF2CD0281538AD1E00EC1063 /* Build configuration list for PBXNativeTarget "IRSlidingSplitViewController" */;
+			buildPhases = (
+				FF2CD01C1538AD1E00EC1063 /* Sources */,
+				FF2CD01D1538AD1E00EC1063 /* Frameworks */,
+				FF2CD01E1538AD1E00EC1063 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = IRSlidingSplitViewController;
+			productName = libIRSlidingSplitViewController;
+			productReference = FF2CD0581538AEDF00EC1063 /* libIRSlidingSplitViewController.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		FF2CCFDD1538A1CB00EC1063 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = IRSSV;
+				ORGANIZATIONNAME = "Iridia Productions";
+			};
+			buildConfigurationList = FF2CCFE01538A1CB00EC1063 /* Build configuration list for PBXProject "IRSlidingSplitViewController" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = FF2CCFDB1538A1CB00EC1063;
+			productRefGroup = FF2CCFDB1538A1CB00EC1063;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				FF2CD01F1538AD1E00EC1063 /* IRSlidingSplitViewController */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		FF2CD01C1538AD1E00EC1063 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FF2CD06A1538AF4B00EC1063 /* IRSlidingSplitViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		FF2CCFFC1538A1CB00EC1063 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		FF2CCFFD1538A1CB00EC1063 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		FF2CD0291538AD1E00EC1063 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/libIRSlidingSplitViewController.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "IRSlidingSplitViewController/IRSlidingSplitViewController-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		FF2CD02A1538AD1E00EC1063 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/libIRSlidingSplitViewController.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "IRSlidingSplitViewController/IRSlidingSplitViewController-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		FF2CCFE01538A1CB00EC1063 /* Build configuration list for PBXProject "IRSlidingSplitViewController" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FF2CCFFC1538A1CB00EC1063 /* Debug */,
+				FF2CCFFD1538A1CB00EC1063 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FF2CD0281538AD1E00EC1063 /* Build configuration list for PBXNativeTarget "IRSlidingSplitViewController" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FF2CD0291538AD1E00EC1063 /* Debug */,
+				FF2CD02A1538AD1E00EC1063 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = FF2CCFDD1538A1CB00EC1063 /* Project object */;
+}
