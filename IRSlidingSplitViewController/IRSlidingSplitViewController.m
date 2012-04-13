@@ -19,6 +19,7 @@
 @implementation IRSlidingSplitViewController
 @synthesize masterViewController, detailViewController;
 @synthesize panGestureRecognizer, tapGestureRecognizer;
+@synthesize showingMasterViewController;
 
 - (void) setMasterViewController:(UIViewController *)newMasterViewController {
 
