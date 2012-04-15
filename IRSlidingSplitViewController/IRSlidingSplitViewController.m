@@ -148,7 +148,9 @@
 	
 	panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
 	panGestureRecognizer.delegate = self;
-	
+	panGestureRecognizer.cancelsTouchesInView = YES;
+	panGestureRecognizer.delaysTouchesBegan = YES;
+
 	return panGestureRecognizer;
 
 }
@@ -160,39 +162,56 @@
 	
 	tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
 	tapGestureRecognizer.delegate = self;
-	tapGestureRecognizer.cancelsTouchesInView = NO;
-	tapGestureRecognizer.delaysTouchesBegan = NO;
-	tapGestureRecognizer.delaysTouchesEnded = NO;
+	tapGestureRecognizer.cancelsTouchesInView = YES;
 	
 	return tapGestureRecognizer;
 
 }
 
-- (BOOL) gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
+- (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
 
 	UIView *detailView = self.detailViewController.view;
 	CGRect detailVisibleRect = CGRectIntersection(self.view.bounds, [self.view convertRect:detailView.bounds fromView:detailView]);
 	
 	BOOL touchInDetailVisibleRect = !CGRectEqualToRect(detailVisibleRect, CGRectNull) &&
-		CGRectContainsPoint(detailVisibleRect, [gestureRecognizer locationInView:self.view]);
+		CGRectContainsPoint(detailVisibleRect, [touch locationInView:self.view]);
 	
 	if (gestureRecognizer == panGestureRecognizer)
-		return !self.showingMasterViewController && touchInDetailVisibleRect;
+		return touchInDetailVisibleRect;// !self.showingMasterViewController && touchInDetailVisibleRect;
 	
 	if (gestureRecognizer == tapGestureRecognizer)
 		return self.showingMasterViewController && touchInDetailVisibleRect;
 	
-	return NO;
+	return YES;
 
 }
 
 - (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
 
-	if (gestureRecognizer == tapGestureRecognizer)
+	if (gestureRecognizer == tapGestureRecognizer) {
+		
+		if ([otherGestureRecognizer.view isDescendantOfView:self.detailViewController.view])
+			return NO;
+		
+		if (self.showingMasterViewController)
+		if (gestureRecognizer.state == UIGestureRecognizerStateRecognized)
+			return NO;
+		
 		return YES;
+		
+	}
 	
-	if (gestureRecognizer == panGestureRecognizer)
-		return NO;
+	if (gestureRecognizer == panGestureRecognizer) {
+	
+		if ([otherGestureRecognizer.view isDescendantOfView:self.masterViewController.view])
+			return NO;
+		
+		if (!self.showingMasterViewController)
+			return NO;
+		
+		return YES;
+		
+	}
 	
 	return YES;
 
@@ -204,9 +223,34 @@
 
 	switch (panGR.state) {
 		
-		case UIGestureRecognizerStatePossible:
-		case UIGestureRecognizerStateBegan: {
+		case UIGestureRecognizerStatePossible: {
 			break;
+		}
+		
+		case UIGestureRecognizerStateBegan: {
+			
+			__block UIView * (^firstResponderInView)(UIView *) = [^ (UIView *view) {
+
+				if ([view isFirstResponder])
+					return view;
+				
+				for (UIView *aSubview in view.subviews) {
+					UIView *foundFirstResponder = firstResponderInView(aSubview);
+					if (foundFirstResponder)
+						return foundFirstResponder;
+				}
+				
+				return (UIView *)nil;
+
+			} copy];
+			
+			[firstResponderInView(self.masterViewController.view) resignFirstResponder];
+			[firstResponderInView(self.detailViewController.view) resignFirstResponder];
+			
+			firstResponderInView = nil;
+			
+			break;
+			
 		}
 		
 		case UIGestureRecognizerStateChanged: {
