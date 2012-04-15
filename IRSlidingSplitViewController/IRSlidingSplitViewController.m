@@ -79,13 +79,16 @@
 		
 	}
 	
+	[masterViewController willMoveToParentViewController:nil];
 	[masterViewController removeFromParentViewController];
 	[masterViewController.view removeFromSuperview];
 	
 	masterViewController = toMasterVC;
 	
 	[self addChildViewController:masterViewController];
+	[self configureMasterView:masterViewController.view];
 	[self.view addSubview:masterViewController.view];
+	[masterViewController didMoveToParentViewController:self];
 	
 	[self layoutViews];
 	
@@ -105,13 +108,16 @@
 		
 	}
 	
+	[detailViewController willMoveToParentViewController:nil];
 	[detailViewController removeFromParentViewController];
 	[detailViewController.view removeFromSuperview];
 	
 	detailViewController = toDetailVC;
 	
 	[self addChildViewController:detailViewController];
+	[self configureDetailView:detailViewController.view];
 	[self.view addSubview:detailViewController.view];
+	[detailViewController didMoveToParentViewController:self];
 
 	[self layoutViews];
 	
@@ -219,11 +225,15 @@
 			
 			if (!self.showingMasterViewController && translation.x > 0) {
 				
-				self.showingMasterViewController = YES;
+				[self willChangeValueForKey:@"showingMasterViewController"];
+				showingMasterViewController = YES;
+				[self didChangeValueForKey:@"showingMasterViewController"];
 				
 			} else if (self.showingMasterViewController && translation.x < 0) {
 				
-				self.showingMasterViewController = NO;
+				[self willChangeValueForKey:@"showingMasterViewController"];
+				showingMasterViewController = NO;
+				[self didChangeValueForKey:@"showingMasterViewController"];
 				
 			}
 			
@@ -328,6 +338,18 @@
 	BOOL detailVCRotatable = [self.detailViewController shouldAutorotateToInterfaceOrientation:toInterfaceOrientation];
 
 	return masterVCRotatable && detailVCRotatable;
+
+}
+
+- (void) configureMasterView:(UIView *)view {
+
+	//	For subclasses
+
+}
+
+- (void) configureDetailView:(UIView *)view {
+
+	//	For subclasses
 
 }
 

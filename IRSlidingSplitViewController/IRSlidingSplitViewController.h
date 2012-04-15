@@ -22,6 +22,9 @@
 - (CGRect) rectForMasterView;
 - (CGRect) rectForDetailView;
 
+- (void) configureMasterView:(UIView *)view;
+- (void) configureDetailView:(UIView *)view;
+
 @property (nonatomic, readonly, strong) UIPanGestureRecognizer *panGestureRecognizer;
 @property (nonatomic, readonly, strong) UITapGestureRecognizer *tapGestureRecognizer;
 
