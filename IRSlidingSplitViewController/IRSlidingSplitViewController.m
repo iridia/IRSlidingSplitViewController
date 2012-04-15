@@ -7,6 +7,7 @@
 //
 
 #import "IRSlidingSplitViewController.h"
+#import <UIKit/UIGestureRecognizerSubclass.h>
 
 @interface IRSlidingSplitViewController () <UIGestureRecognizerDelegate>
 
@@ -32,6 +33,8 @@
 	
 	[self addChildViewController:masterViewController];
 	[self.view addSubview:masterViewController.view];
+	
+	[self.view setNeedsLayout];
 
 }
 
@@ -48,6 +51,8 @@
 	[self addChildViewController:detailViewController];
 	[self.view addSubview:detailViewController.view];
 
+	[self.view setNeedsLayout];
+	
 }
 
 - (CGRect) rectForMasterView {
@@ -72,6 +77,7 @@
 	
 	panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
 	panGestureRecognizer.delegate = self;
+	panGestureRecognizer.delaysTouchesBegan = YES;
 	
 	return panGestureRecognizer;
 
@@ -84,6 +90,9 @@
 	
 	tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
 	tapGestureRecognizer.delegate = self;
+	tapGestureRecognizer.cancelsTouchesInView = NO;
+	tapGestureRecognizer.delaysTouchesBegan = NO;
+	tapGestureRecognizer.delaysTouchesEnded = NO;
 	
 	return tapGestureRecognizer;
 
@@ -97,17 +106,25 @@
 	BOOL touchInDetailVisibleRect = !CGRectEqualToRect(detailVisibleRect, CGRectNull) &&
 		CGRectContainsPoint(detailVisibleRect, [gestureRecognizer locationInView:self.view]);
 	
-	if (gestureRecognizer == panGestureRecognizer) {
+	if (gestureRecognizer == panGestureRecognizer)
+		return !self.showingMasterViewController && touchInDetailVisibleRect;
 	
-		return touchInDetailVisibleRect;
-	
-	} else if (gestureRecognizer == tapGestureRecognizer) {
-	
-		return touchInDetailVisibleRect;
-	
-	}
+	if (gestureRecognizer == tapGestureRecognizer)
+		return self.showingMasterViewController && touchInDetailVisibleRect;
 	
 	return NO;
+
+}
+
+- (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+
+	if (gestureRecognizer == tapGestureRecognizer)
+		return YES;
+	
+	if (gestureRecognizer == panGestureRecognizer)
+		return NO;
+	
+	return YES;
 
 }
 
@@ -116,18 +133,22 @@
 	#pragma unused(panGR)
 
 	switch (panGR.state) {
-		case UIGestureRecognizerStatePossible: {
-			break;
-		}
+		
+		case UIGestureRecognizerStatePossible:
 		case UIGestureRecognizerStateBegan: {
 			break;
 		}
+		
 		case UIGestureRecognizerStateChanged: {
+			
 			CGRect oldDetailRect = [self rectForDetailView];
 			CGPoint translation = [panGR translationInView:self.view];
 			self.detailViewController.view.frame = CGRectOffset(oldDetailRect, translation.x, 0);
+			
 			break;
+			
 		}
+		
 		case UIGestureRecognizerStateEnded: {
 
 			CGPoint translation = [panGR translationInView:self.view];
@@ -157,6 +178,7 @@
 				[UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionAllowUserInteraction animations:^{
 				
 					self.detailViewController.view.frame = [self rectForDetailView];
+					[self layoutViews];
 
 				} completion:nil];
 			
@@ -179,6 +201,7 @@
 	[UIView animateWithDuration:0.25 delay:0 options:options animations:^{
 		
 		self.showingMasterViewController = NO;
+		
 		[self.view layoutSubviews];
 		[self layoutViews];
 
@@ -220,6 +243,7 @@
 	detailView.frame = [self rectForDetailView];
 	
 	[detailView.superview bringSubviewToFront:detailView];
+	detailView.userInteractionEnabled = !self.showingMasterViewController;
 
 }
 
