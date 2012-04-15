@@ -18,40 +18,105 @@
 
 
 @implementation IRSlidingSplitViewController
+@synthesize showingMasterViewController;
 @synthesize masterViewController, detailViewController;
 @synthesize panGestureRecognizer, tapGestureRecognizer;
 
+- (void) setShowingMasterViewController:(BOOL)flag {
+
+	[self setShowingMasterViewController:flag animated:NO completion:nil];
+
+}
+
+- (void) setShowingMasterViewController:(BOOL)flag animated:(BOOL)animate completion:(void(^)(BOOL didFinish))callback {
+
+	if (self.showingMasterViewController == flag) {
+	
+		if (callback)
+			callback(NO);
+	
+		return;
+		
+	}
+	
+	showingMasterViewController = flag;
+	
+	NSTimeInterval duration = animate ? 0.3 : 0;
+	
+	[UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionAllowUserInteraction animations:^{
+
+		[self layoutViews];
+
+	} completion:^(BOOL finished) {
+		
+		if (callback)
+			callback(finished);
+		
+	}];
+
+}
+
 - (void) setMasterViewController:(UIViewController *)newMasterViewController {
 
-	if (masterViewController == newMasterViewController)
-		return;
-	
-	[masterViewController removeFromParentViewController];
-	[masterViewController.view removeFromSuperview];
-	
-	masterViewController = newMasterViewController;
-	
-	[self addChildViewController:masterViewController];
-	[self.view addSubview:masterViewController.view];
-	
-	[self.view setNeedsLayout];
+	[self setMasterViewController:newMasterViewController animated:NO completion:nil];
 
 }
 
 - (void) setDetailViewController:(UIViewController *)newDetailViewController {
 
-	if (detailViewController == newDetailViewController)
+	[self setDetailViewController:newDetailViewController animated:NO completion:nil];
+
+}
+
+- (void) setMasterViewController:(UIViewController *)toMasterVC animated:(BOOL)animate completion:(void(^)(BOOL didFinish))callback {
+
+	if (masterViewController == toMasterVC) {
+		
+		if (callback)
+			callback(NO);
+		
 		return;
+		
+	}
+	
+	[masterViewController removeFromParentViewController];
+	[masterViewController.view removeFromSuperview];
+	
+	masterViewController = toMasterVC;
+	
+	[self addChildViewController:masterViewController];
+	[self.view addSubview:masterViewController.view];
+	
+	[self layoutViews];
+	
+	if (callback)
+		callback(YES);
+
+}
+
+- (void) setDetailViewController:(UIViewController *)toDetailVC animated:(BOOL)animate completion:(void(^)(BOOL didFinish))callback {
+
+	if (detailViewController == toDetailVC) {
+		
+		if (callback)
+			callback(NO);
+		
+		return;
+		
+	}
 	
 	[detailViewController removeFromParentViewController];
 	[detailViewController.view removeFromSuperview];
 	
-	detailViewController = newDetailViewController;
+	detailViewController = toDetailVC;
 	
 	[self addChildViewController:detailViewController];
 	[self.view addSubview:detailViewController.view];
 
-	[self.view setNeedsLayout];
+	[self layoutViews];
+	
+	if (callback)
+		callback(YES);
 	
 }
 
@@ -77,7 +142,6 @@
 	
 	panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
 	panGestureRecognizer.delegate = self;
-	panGestureRecognizer.delaysTouchesBegan = YES;
 	
 	return panGestureRecognizer;
 
@@ -234,6 +298,14 @@
 
 }
 
+- (void) viewWillAppear:(BOOL)animated {
+
+	[super viewWillAppear:animated];
+	
+	[self layoutViews];
+
+}
+
 - (void) layoutViews {
 
 	UIView *masterView = self.masterViewController.view;
@@ -244,6 +316,18 @@
 	
 	[detailView.superview bringSubviewToFront:detailView];
 	detailView.userInteractionEnabled = !self.showingMasterViewController;
+	
+}
+
+- (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+
+	if (!self.masterViewController || !self.detailViewController)
+		return YES;
+
+	BOOL masterVCRotatable = [self.masterViewController shouldAutorotateToInterfaceOrientation:toInterfaceOrientation];
+	BOOL detailVCRotatable = [self.detailViewController shouldAutorotateToInterfaceOrientation:toInterfaceOrientation];
+
+	return masterVCRotatable && detailVCRotatable;
 
 }
 
