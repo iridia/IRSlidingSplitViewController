@@ -22,6 +22,9 @@
 - (CGRect) rectForMasterView;
 - (CGRect) rectForDetailView;
 
+- (CGFloat) masterViewDisclosureWidth;
+- (CGPoint) detailViewTranslationForGestureTranslation:(CGPoint)translation;
+
 - (void) configureMasterView:(UIView *)view;
 - (void) configureDetailView:(UIView *)view;
 

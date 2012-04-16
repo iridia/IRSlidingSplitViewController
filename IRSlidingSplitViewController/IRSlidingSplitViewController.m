@@ -135,10 +135,22 @@
 - (CGRect) rectForDetailView {
 
 	if (self.showingMasterViewController)
-		return CGRectOffset(self.view.bounds, 280, 0);
+		return CGRectOffset(self.view.bounds, [self masterViewDisclosureWidth], 0);
 	
 	return self.view.bounds;
 
+}
+
+- (CGFloat) masterViewDisclosureWidth {
+
+	return 200;
+
+}
+
+- (CGPoint) detailViewTranslationForGestureTranslation:(CGPoint)translation {
+
+	return (CGPoint){ translation.x, 0 };
+	
 }
 
 - (UIPanGestureRecognizer *) panGestureRecognizer {
@@ -175,8 +187,14 @@
 	BOOL touchInDetailVisibleRect = !CGRectEqualToRect(detailVisibleRect, CGRectNull) &&
 		CGRectContainsPoint(detailVisibleRect, [touch locationInView:self.view]);
 	
-	if (gestureRecognizer == panGestureRecognizer)
-		return touchInDetailVisibleRect;// !self.showingMasterViewController && touchInDetailVisibleRect;
+	if (gestureRecognizer == panGestureRecognizer) {
+	
+		if (touchInDetailVisibleRect)
+			return ![[touch view] isKindOfClass:[UISlider class]];
+			
+		return NO;
+		
+	}
 	
 	if (gestureRecognizer == tapGestureRecognizer)
 		return self.showingMasterViewController && touchInDetailVisibleRect;
@@ -253,7 +271,9 @@
 			
 			CGRect oldDetailRect = [self rectForDetailView];
 			CGPoint translation = [panGR translationInView:self.view];
-			self.detailViewController.view.frame = CGRectOffset(oldDetailRect, translation.x, 0);
+			CGPoint transformedTranslation = [self detailViewTranslationForGestureTranslation:translation];
+			
+			self.detailViewController.view.frame = CGRectOffset(oldDetailRect, transformedTranslation.x, transformedTranslation.y);
 			
 			break;
 			
