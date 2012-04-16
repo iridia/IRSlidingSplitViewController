@@ -205,10 +205,7 @@
 		if ([otherGestureRecognizer.view isDescendantOfView:self.masterViewController.view])
 			return NO;
 		
-		if (self.showingMasterViewController)
-			return NO;
-		
-		return YES;
+		return NO;
 		
 	}
 	
