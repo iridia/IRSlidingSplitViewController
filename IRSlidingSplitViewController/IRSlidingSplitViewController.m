@@ -149,7 +149,6 @@
 	panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
 	panGestureRecognizer.delegate = self;
 	panGestureRecognizer.cancelsTouchesInView = YES;
-	panGestureRecognizer.delaysTouchesBegan = YES;
 
 	return panGestureRecognizer;
 
@@ -206,7 +205,7 @@
 		if ([otherGestureRecognizer.view isDescendantOfView:self.masterViewController.view])
 			return NO;
 		
-		if (!self.showingMasterViewController)
+		if (self.showingMasterViewController)
 			return NO;
 		
 		return YES;
