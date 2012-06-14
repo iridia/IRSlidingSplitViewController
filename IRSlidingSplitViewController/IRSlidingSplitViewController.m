@@ -384,6 +384,9 @@
 	masterView.frame = [self rectForMasterView];
 	detailView.frame = [self rectForDetailView];
 	
+	masterView.clipsToBounds = YES;
+	detailView.clipsToBounds = YES;
+	
 	[detailView.superview bringSubviewToFront:detailView];
 	detailView.userInteractionEnabled = !self.showingMasterViewController;
 	
