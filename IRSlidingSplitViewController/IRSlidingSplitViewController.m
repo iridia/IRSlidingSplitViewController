@@ -135,15 +135,9 @@
 - (CGRect) rectForDetailView {
 
 	if (self.showingMasterViewController)
-		return CGRectOffset(self.view.bounds, [self masterViewDisclosureWidth], 0);
+		return CGRectOffset(self.view.bounds, 200.0f, 0.0f);
 	
 	return self.view.bounds;
-
-}
-
-- (CGFloat) masterViewDisclosureWidth {
-
-	return 200;
 
 }
 
@@ -151,6 +145,18 @@
 
 	return (CGPoint){ translation.x, 0 };
 	
+}
+
+- (BOOL) shouldShowMasterViewControllerWithGestureTranslation:(CGPoint)translation {
+
+	if (!self.showingMasterViewController && translation.x > 0)
+		return YES;
+		
+	if (self.showingMasterViewController && translation.x < 0)
+		return NO;
+	
+	return self.showingMasterViewController;
+
 }
 
 - (UIPanGestureRecognizer *) panGestureRecognizer {
@@ -283,16 +289,12 @@
 
 			CGPoint translation = [panGR translationInView:self.view];
 			
-			if (!self.showingMasterViewController && translation.x > 0) {
-				
+			BOOL shouldShow = [self shouldShowMasterViewControllerWithGestureTranslation:translation];
+			
+			if (showingMasterViewController != shouldShow) {
+			
 				[self willChangeValueForKey:@"showingMasterViewController"];
-				showingMasterViewController = YES;
-				[self didChangeValueForKey:@"showingMasterViewController"];
-				
-			} else if (self.showingMasterViewController && translation.x < 0) {
-				
-				[self willChangeValueForKey:@"showingMasterViewController"];
-				showingMasterViewController = NO;
+				showingMasterViewController = shouldShow;
 				[self didChangeValueForKey:@"showingMasterViewController"];
 				
 			}
