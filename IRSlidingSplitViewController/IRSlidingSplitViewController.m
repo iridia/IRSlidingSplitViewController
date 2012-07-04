@@ -332,16 +332,7 @@
 
 	#pragma unused(tapGR)
 	
-	UIViewAnimationOptions options = UIViewAnimationOptionCurveEaseInOut;
-	
-	[UIView animateWithDuration:0.25 delay:0 options:options animations:^{
-		
-		self.showingMasterViewController = NO;
-		
-		[self.view layoutSubviews];
-		[self layoutViews];
-
-	} completion:nil];
+	[self setShowingMasterViewController:NO animated:YES completion:nil];
 	
 }
 
