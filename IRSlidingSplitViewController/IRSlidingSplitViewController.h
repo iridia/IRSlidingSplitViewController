@@ -31,4 +31,6 @@
 @property (nonatomic, readonly, strong) UIPanGestureRecognizer *panGestureRecognizer;
 @property (nonatomic, readonly, strong) UITapGestureRecognizer *tapGestureRecognizer;
 
+- (void) layoutViews;	//	called internally, override for more layout
+
 @end
