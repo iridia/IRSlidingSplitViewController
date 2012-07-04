@@ -11,9 +11,6 @@
 
 @interface IRSlidingSplitViewController () <UIGestureRecognizerDelegate>
 
-@property (nonatomic, readwrite, strong) UIPanGestureRecognizer *panGestureRecognizer;
-@property (nonatomic, readwrite, strong) UITapGestureRecognizer *tapGestureRecognizer;
-
 @end
 
 @implementation IRSlidingSplitViewController
@@ -80,6 +77,8 @@
 		
 	}
 	
+	[self willChangeValueForKey:@"masterViewController"];
+	
 	[_masterViewController willMoveToParentViewController:nil];
 	[_masterViewController removeFromParentViewController];
 	[_masterViewController.view removeFromSuperview];
@@ -94,6 +93,8 @@
 		[_masterViewController didMoveToParentViewController:self];
 	
 	}
+	
+	[self didChangeValueForKey:@"masterViewController"];
 	
 	[self layoutViews];
 	
@@ -113,6 +114,8 @@
 		
 	}
 	
+	[self willChangeValueForKey:@"detailViewController"];
+	
 	[_detailViewController willMoveToParentViewController:nil];
 	[_detailViewController removeFromParentViewController];
 	[_detailViewController.view removeFromSuperview];
@@ -128,6 +131,8 @@
 	
 	}
 
+	[self didChangeValueForKey:@"detailViewController"];
+	
 	[self layoutViews];
 	
 	if (callback)
@@ -363,12 +368,19 @@
 
 }
 
-- (void) viewDidUnload {
+- (void) setView:(UIView *)view {
 	
-	[super viewDidUnload];
+	[super setView:view];
 	
-	self.panGestureRecognizer = nil;
-	self.tapGestureRecognizer = nil;
+	if (!view) {
+	
+		_panGestureRecognizer.delegate = nil;
+		_panGestureRecognizer = nil;
+
+		_tapGestureRecognizer.delegate = nil;
+		_tapGestureRecognizer = nil;
+	
+	}
 
 }
 
