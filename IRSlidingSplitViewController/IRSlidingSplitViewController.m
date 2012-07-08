@@ -1,17 +1,15 @@
 //
 //  IRSlidingSplitViewController.m
-//  IRSlidingSplitViewControllerTest
+//  IRSlidingSplitViewController
 //
 //  Created by Evadne Wu on 4/14/12.
 //  Copyright (c) 2012 Iridia Productions. All rights reserved.
 //
 
-#import "IRSlidingSplitViewController.h"
 #import <UIKit/UIGestureRecognizerSubclass.h>
 
-@interface IRSlidingSplitViewController () <UIGestureRecognizerDelegate>
-
-@end
+#import "IRSlidingSplitViewController.h"
+#import "IRSlidingSplitViewControllerSubclass.h"
 
 @implementation IRSlidingSplitViewController
 @synthesize showingMasterViewController = _showingMasterViewController;
@@ -161,12 +159,12 @@
 	
 }
 
-- (BOOL) shouldShowMasterViewControllerWithGestureTranslation:(CGPoint)translation {
+- (BOOL) shouldShowMasterViewControllerWithGestureTranslation:(CGPoint)translation velocity:(CGPoint)velocity {
 
-	if (!self.showingMasterViewController && translation.x > 0)
+	if (!self.showingMasterViewController && velocity.x > 0)
 		return YES;
 		
-	if (self.showingMasterViewController && translation.x < 0)
+	if (self.showingMasterViewController && velocity.x < 0)
 		return NO;
 	
 	return self.showingMasterViewController;
@@ -214,10 +212,11 @@
 			
 		return NO;
 		
-	}
-	
-	if (gestureRecognizer == _tapGestureRecognizer)
+	} else if (gestureRecognizer == _tapGestureRecognizer) {
+		
 		return self.showingMasterViewController && touchInDetailVisibleRect;
+	
+	}
 	
 	return YES;
 
@@ -302,8 +301,9 @@
 		case UIGestureRecognizerStateEnded: {
 
 			CGPoint translation = [panGR translationInView:self.view];
+			CGPoint velocity = [panGR velocityInView:self.view];
 			
-			BOOL shouldShow = [self shouldShowMasterViewControllerWithGestureTranslation:translation];
+			BOOL shouldShow = [self shouldShowMasterViewControllerWithGestureTranslation:translation velocity:velocity];
 			
 			if (_showingMasterViewController != shouldShow) {
 			
