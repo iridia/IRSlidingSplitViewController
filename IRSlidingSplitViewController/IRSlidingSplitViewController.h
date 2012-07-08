@@ -11,14 +11,12 @@
 @interface IRSlidingSplitViewController : UIViewController
 
 @property (nonatomic, readwrite, assign) BOOL showingMasterViewController;
-
 @property (nonatomic, readwrite, strong) IBOutlet UIViewController *masterViewController;
 @property (nonatomic, readwrite, strong) IBOutlet UIViewController *detailViewController;
 
-- (CGRect) rectForMasterView;
-- (CGRect) rectForDetailView;
+- (void) setShowingMasterViewController:(BOOL)showingMasterViewController animated:(BOOL)animate completion:(void(^)(BOOL didFinish))callback;
 
-@property (nonatomic, readonly, strong) UIPanGestureRecognizer *panGestureRecognizer;
-@property (nonatomic, readonly, strong) UITapGestureRecognizer *tapGestureRecognizer;
+- (void) setMasterViewController:(UIViewController *)toMasterVC animated:(BOOL)animate completion:(void(^)(BOOL didFinish))callback;
+- (void) setDetailViewController:(UIViewController *)toDetailVC animated:(BOOL)animate completion:(void(^)(BOOL didFinish))callback;
 
 @end

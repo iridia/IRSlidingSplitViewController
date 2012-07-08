@@ -11,6 +11,7 @@
 		FF2CD02B1538AD4F00EC1063 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF2CCFEA1538A1CB00EC1063 /* UIKit.framework */; };
 		FF2CD02C1538AD4F00EC1063 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF2CCFEE1538A1CB00EC1063 /* CoreGraphics.framework */; };
 		FF2CD06A1538AF4B00EC1063 /* IRSlidingSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF2CD0021538A20A00EC1063 /* IRSlidingSplitViewController.m */; };
+		FFC2E56915A96FCB0081D0E4 /* IRSlidingSplitViewControllerSubclass.h in Headers */ = {isa = PBXBuildFile; fileRef = FFC2E56815A96FCB0081D0E4 /* IRSlidingSplitViewControllerSubclass.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,6 +22,7 @@
 		FF2CD0021538A20A00EC1063 /* IRSlidingSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IRSlidingSplitViewController.m; path = IRSlidingSplitViewController/IRSlidingSplitViewController.m; sourceTree = "<group>"; };
 		FF2CD0241538AD1E00EC1063 /* IRSlidingSplitViewController-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "IRSlidingSplitViewController-Prefix.pch"; path = "IRSlidingSplitViewController/IRSlidingSplitViewController-Prefix.pch"; sourceTree = "<group>"; };
 		FF2CD0581538AEDF00EC1063 /* libIRSlidingSplitViewController.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libIRSlidingSplitViewController.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		FFC2E56815A96FCB0081D0E4 /* IRSlidingSplitViewControllerSubclass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IRSlidingSplitViewControllerSubclass.h; path = IRSlidingSplitViewController/IRSlidingSplitViewControllerSubclass.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,6 +44,7 @@
 			children = (
 				FF2CD0011538A20A00EC1063 /* IRSlidingSplitViewController.h */,
 				FF2CD0021538A20A00EC1063 /* IRSlidingSplitViewController.m */,
+				FFC2E56815A96FCB0081D0E4 /* IRSlidingSplitViewControllerSubclass.h */,
 				FF2CD0241538AD1E00EC1063 /* IRSlidingSplitViewController-Prefix.pch */,
 				FF2CCFE91538A1CB00EC1063 /* Frameworks */,
 				FF2CD05B1538AEF100EC1063 /* Products */,
@@ -73,6 +76,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FFC2E56915A96FCB0081D0E4 /* IRSlidingSplitViewControllerSubclass.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

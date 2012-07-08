@@ -1,53 +1,141 @@
 //
 //  IRSlidingSplitViewController.m
-//  IRSlidingSplitViewControllerTest
+//  IRSlidingSplitViewController
 //
 //  Created by Evadne Wu on 4/14/12.
 //  Copyright (c) 2012 Iridia Productions. All rights reserved.
 //
 
+#import <UIKit/UIGestureRecognizerSubclass.h>
+
 #import "IRSlidingSplitViewController.h"
-
-@interface IRSlidingSplitViewController () <UIGestureRecognizerDelegate>
-
-@property (nonatomic, readwrite, strong) UIPanGestureRecognizer *panGestureRecognizer;
-@property (nonatomic, readwrite, strong) UITapGestureRecognizer *tapGestureRecognizer;
-
-@end
-
+#import "IRSlidingSplitViewControllerSubclass.h"
 
 @implementation IRSlidingSplitViewController
-@synthesize masterViewController, detailViewController;
-@synthesize panGestureRecognizer, tapGestureRecognizer;
+@synthesize showingMasterViewController = _showingMasterViewController;
+@synthesize masterViewController = _masterViewController;
+@synthesize detailViewController = _detailViewController;
+@synthesize panGestureRecognizer = _panGestureRecognizer;
+@synthesize tapGestureRecognizer = _tapGestureRecognizer;
+
+- (void) setShowingMasterViewController:(BOOL)flag {
+
+	[self setShowingMasterViewController:flag animated:NO completion:nil];
+
+}
+
+- (void) setShowingMasterViewController:(BOOL)flag animated:(BOOL)animate completion:(void(^)(BOOL didFinish))callback {
+
+	if (self.showingMasterViewController == flag) {
+	
+		if (callback)
+			callback(NO);
+	
+		return;
+		
+	}
+	
+	_showingMasterViewController = flag;
+	
+	NSTimeInterval duration = animate ? 0.3 : 0;
+	
+	[UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionAllowUserInteraction animations:^{
+
+		[self layoutViews];
+
+	} completion:^(BOOL finished) {
+		
+		if (callback)
+			callback(finished);
+		
+	}];
+
+}
 
 - (void) setMasterViewController:(UIViewController *)newMasterViewController {
 
-	if (masterViewController == newMasterViewController)
-		return;
-	
-	[masterViewController removeFromParentViewController];
-	[masterViewController.view removeFromSuperview];
-	
-	masterViewController = newMasterViewController;
-	
-	[self addChildViewController:masterViewController];
-	[self.view addSubview:masterViewController.view];
+	[self setMasterViewController:newMasterViewController animated:NO completion:nil];
 
 }
 
 - (void) setDetailViewController:(UIViewController *)newDetailViewController {
 
-	if (detailViewController == newDetailViewController)
-		return;
-	
-	[detailViewController removeFromParentViewController];
-	[detailViewController.view removeFromSuperview];
-	
-	detailViewController = newDetailViewController;
-	
-	[self addChildViewController:detailViewController];
-	[self.view addSubview:detailViewController.view];
+	[self setDetailViewController:newDetailViewController animated:NO completion:nil];
 
+}
+
+- (void) setMasterViewController:(UIViewController *)toMasterVC animated:(BOOL)animate completion:(void(^)(BOOL didFinish))callback {
+
+	if (_masterViewController == toMasterVC) {
+		
+		if (callback)
+			callback(NO);
+		
+		return;
+		
+	}
+	
+	[self willChangeValueForKey:@"masterViewController"];
+	
+	[_masterViewController willMoveToParentViewController:nil];
+	[_masterViewController removeFromParentViewController];
+	[_masterViewController.view removeFromSuperview];
+	
+	_masterViewController = toMasterVC;
+	
+	if (_masterViewController) {
+	
+		[self addChildViewController:_masterViewController];
+		[self configureMasterView:_masterViewController.view];
+		[self.view addSubview:_masterViewController.view];
+		[_masterViewController didMoveToParentViewController:self];
+	
+	}
+	
+	[self didChangeValueForKey:@"masterViewController"];
+	
+	[self layoutViews];
+	
+	if (callback)
+		callback(YES);
+
+}
+
+- (void) setDetailViewController:(UIViewController *)toDetailVC animated:(BOOL)animate completion:(void(^)(BOOL didFinish))callback {
+
+	if (_detailViewController == toDetailVC) {
+		
+		if (callback)
+			callback(NO);
+		
+		return;
+		
+	}
+	
+	[self willChangeValueForKey:@"detailViewController"];
+	
+	[_detailViewController willMoveToParentViewController:nil];
+	[_detailViewController removeFromParentViewController];
+	[_detailViewController.view removeFromSuperview];
+	
+	_detailViewController = toDetailVC;
+	
+	if (_detailViewController) {
+	
+		[self addChildViewController:_detailViewController];
+		[self configureDetailView:_detailViewController.view];
+		[self.view addSubview:_detailViewController.view];
+		[_detailViewController didMoveToParentViewController:self];
+	
+	}
+
+	[self didChangeValueForKey:@"detailViewController"];
+	
+	[self layoutViews];
+	
+	if (callback)
+		callback(YES);
+	
 }
 
 - (CGRect) rectForMasterView {
@@ -59,55 +147,106 @@
 - (CGRect) rectForDetailView {
 
 	if (self.showingMasterViewController)
-		return CGRectOffset(self.view.bounds, 280, 0);
+		return CGRectOffset(self.view.bounds, 200.0f, 0.0f);
 	
 	return self.view.bounds;
 
 }
 
+- (CGPoint) detailViewTranslationForGestureTranslation:(CGPoint)translation {
+
+	return (CGPoint){ translation.x, 0 };
+	
+}
+
+- (BOOL) shouldShowMasterViewControllerWithGestureTranslation:(CGPoint)translation velocity:(CGPoint)velocity {
+
+	if (!self.showingMasterViewController && velocity.x > 0)
+		return YES;
+		
+	if (self.showingMasterViewController && velocity.x < 0)
+		return NO;
+	
+	return self.showingMasterViewController;
+
+}
+
 - (UIPanGestureRecognizer *) panGestureRecognizer {
 
-	if (panGestureRecognizer)
-		return panGestureRecognizer;
+	if (_panGestureRecognizer)
+		return _panGestureRecognizer;
 	
-	panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
-	panGestureRecognizer.delegate = self;
-	
-	return panGestureRecognizer;
+	_panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
+	_panGestureRecognizer.delegate = self;
+	_panGestureRecognizer.cancelsTouchesInView = YES;
+
+	return _panGestureRecognizer;
 
 }
 
 - (UITapGestureRecognizer *) tapGestureRecognizer {
 
-	if (tapGestureRecognizer)
-		return tapGestureRecognizer;
+	if (_tapGestureRecognizer)
+		return _tapGestureRecognizer;
 	
-	tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
-	tapGestureRecognizer.delegate = self;
+	_tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
+	_tapGestureRecognizer.delegate = self;
+	_tapGestureRecognizer.cancelsTouchesInView = YES;
 	
-	return tapGestureRecognizer;
+	return _tapGestureRecognizer;
 
 }
 
-- (BOOL) gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
+- (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
 
 	UIView *detailView = self.detailViewController.view;
 	CGRect detailVisibleRect = CGRectIntersection(self.view.bounds, [self.view convertRect:detailView.bounds fromView:detailView]);
 	
 	BOOL touchInDetailVisibleRect = !CGRectEqualToRect(detailVisibleRect, CGRectNull) &&
-		CGRectContainsPoint(detailVisibleRect, [gestureRecognizer locationInView:self.view]);
+		CGRectContainsPoint(detailVisibleRect, [touch locationInView:self.view]);
 	
-	if (gestureRecognizer == panGestureRecognizer) {
+	if (gestureRecognizer == _panGestureRecognizer) {
 	
-		return touchInDetailVisibleRect;
-	
-	} else if (gestureRecognizer == tapGestureRecognizer) {
-	
-		return touchInDetailVisibleRect;
+		if (touchInDetailVisibleRect)
+			return ![[touch view] isKindOfClass:[UISlider class]];
+			
+		return NO;
+		
+	} else if (gestureRecognizer == _tapGestureRecognizer) {
+		
+		return self.showingMasterViewController && touchInDetailVisibleRect;
 	
 	}
 	
-	return NO;
+	return YES;
+
+}
+
+- (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+
+	if (gestureRecognizer == _tapGestureRecognizer) {
+		
+		if ([otherGestureRecognizer.view isDescendantOfView:self.detailViewController.view])
+			return NO;
+		
+		if (self.showingMasterViewController)
+		if (gestureRecognizer.state == UIGestureRecognizerStateRecognized)
+			return NO;
+		
+		return YES;
+		
+	}
+	
+	if (gestureRecognizer == _panGestureRecognizer) {
+	
+		if ([otherGestureRecognizer.view isDescendantOfView:self.masterViewController.view])
+			return NO;
+		
+		return NO;
+		
+	}
+	
+	return YES;
 
 }
 
@@ -116,29 +255,61 @@
 	#pragma unused(panGR)
 
 	switch (panGR.state) {
+		
 		case UIGestureRecognizerStatePossible: {
 			break;
 		}
+		
 		case UIGestureRecognizerStateBegan: {
+			
+			__block UIView * (^firstResponderInView)(UIView *) = [^ (UIView *view) {
+
+				if ([view isFirstResponder])
+					return view;
+				
+				for (UIView *aSubview in view.subviews) {
+					UIView *foundFirstResponder = firstResponderInView(aSubview);
+					if (foundFirstResponder)
+						return foundFirstResponder;
+				}
+				
+				return (UIView *)nil;
+
+			} copy];
+			
+			[firstResponderInView(self.masterViewController.view) resignFirstResponder];
+			[firstResponderInView(self.detailViewController.view) resignFirstResponder];
+			
+			firstResponderInView = nil;
+			
 			break;
+			
 		}
+		
 		case UIGestureRecognizerStateChanged: {
+			
 			CGRect oldDetailRect = [self rectForDetailView];
 			CGPoint translation = [panGR translationInView:self.view];
-			self.detailViewController.view.frame = CGRectOffset(oldDetailRect, translation.x, 0);
+			CGPoint transformedTranslation = [self detailViewTranslationForGestureTranslation:translation];
+			
+			self.detailViewController.view.frame = CGRectOffset(oldDetailRect, transformedTranslation.x, transformedTranslation.y);
+			
 			break;
+			
 		}
+		
 		case UIGestureRecognizerStateEnded: {
 
 			CGPoint translation = [panGR translationInView:self.view];
+			CGPoint velocity = [panGR velocityInView:self.view];
 			
-			if (!self.showingMasterViewController && translation.x > 0) {
-				
-				self.showingMasterViewController = YES;
-				
-			} else if (self.showingMasterViewController && translation.x < 0) {
-				
-				self.showingMasterViewController = NO;
+			BOOL shouldShow = [self shouldShowMasterViewControllerWithGestureTranslation:translation velocity:velocity];
+			
+			if (_showingMasterViewController != shouldShow) {
+			
+				[self willChangeValueForKey:@"showingMasterViewController"];
+				_showingMasterViewController = shouldShow;
+				[self didChangeValueForKey:@"showingMasterViewController"];
 				
 			}
 			
@@ -157,6 +328,7 @@
 				[UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionAllowUserInteraction animations:^{
 				
 					self.detailViewController.view.frame = [self rectForDetailView];
+					[self layoutViews];
 
 				} completion:nil];
 			
@@ -174,15 +346,7 @@
 
 	#pragma unused(tapGR)
 	
-	UIViewAnimationOptions options = UIViewAnimationOptionCurveEaseInOut;
-	
-	[UIView animateWithDuration:0.25 delay:0 options:options animations:^{
-		
-		self.showingMasterViewController = NO;
-		[self.view layoutSubviews];
-		[self layoutViews];
-
-	} completion:nil];
+	[self setShowingMasterViewController:NO animated:YES completion:nil];
 	
 }
 
@@ -195,18 +359,33 @@
 
 }
 
-- (void) viewDidUnload {
+- (void) setView:(UIView *)view {
 	
-	[super viewDidUnload];
+	[super setView:view];
 	
-	self.panGestureRecognizer = nil;
-	self.tapGestureRecognizer = nil;
+	if (!view) {
+	
+		_panGestureRecognizer.delegate = nil;
+		_panGestureRecognizer = nil;
+
+		_tapGestureRecognizer.delegate = nil;
+		_tapGestureRecognizer = nil;
+	
+	}
 
 }
 
 - (void) viewDidLayoutSubviews {
 
 	[super viewDidLayoutSubviews];
+	[self layoutViews];
+
+}
+
+- (void) viewWillAppear:(BOOL)animated {
+
+	[super viewWillAppear:animated];
+	
 	[self layoutViews];
 
 }
@@ -219,7 +398,35 @@
 	masterView.frame = [self rectForMasterView];
 	detailView.frame = [self rectForDetailView];
 	
+	masterView.clipsToBounds = YES;
+	detailView.clipsToBounds = YES;
+	
 	[detailView.superview bringSubviewToFront:detailView];
+	detailView.userInteractionEnabled = !self.showingMasterViewController;
+	
+}
+
+- (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+
+	if (!self.masterViewController || !self.detailViewController)
+		return YES;
+
+	BOOL masterVCRotatable = [self.masterViewController shouldAutorotateToInterfaceOrientation:toInterfaceOrientation];
+	BOOL detailVCRotatable = [self.detailViewController shouldAutorotateToInterfaceOrientation:toInterfaceOrientation];
+
+	return masterVCRotatable && detailVCRotatable;
+
+}
+
+- (void) configureMasterView:(UIView *)view {
+
+	//	For subclasses
+
+}
+
+- (void) configureDetailView:(UIView *)view {
+
+	//	For subclasses
 
 }
 
