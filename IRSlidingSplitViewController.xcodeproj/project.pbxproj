@@ -11,6 +11,8 @@
 		FF2CD02B1538AD4F00EC1063 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF2CCFEA1538A1CB00EC1063 /* UIKit.framework */; };
 		FF2CD02C1538AD4F00EC1063 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF2CCFEE1538A1CB00EC1063 /* CoreGraphics.framework */; };
 		FF2CD06A1538AF4B00EC1063 /* IRSlidingSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF2CD0021538A20A00EC1063 /* IRSlidingSplitViewController.m */; };
+		FFB5724F15C1239500333CFF /* IRSlidingPanGestureRecognizer.h in Headers */ = {isa = PBXBuildFile; fileRef = FFB5724D15C1239500333CFF /* IRSlidingPanGestureRecognizer.h */; };
+		FFB5725015C1239500333CFF /* IRSlidingPanGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = FFB5724E15C1239500333CFF /* IRSlidingPanGestureRecognizer.m */; };
 		FFC2E56915A96FCB0081D0E4 /* IRSlidingSplitViewControllerSubclass.h in Headers */ = {isa = PBXBuildFile; fileRef = FFC2E56815A96FCB0081D0E4 /* IRSlidingSplitViewControllerSubclass.h */; };
 /* End PBXBuildFile section */
 
@@ -22,6 +24,9 @@
 		FF2CD0021538A20A00EC1063 /* IRSlidingSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IRSlidingSplitViewController.m; path = IRSlidingSplitViewController/IRSlidingSplitViewController.m; sourceTree = "<group>"; };
 		FF2CD0241538AD1E00EC1063 /* IRSlidingSplitViewController-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "IRSlidingSplitViewController-Prefix.pch"; path = "IRSlidingSplitViewController/IRSlidingSplitViewController-Prefix.pch"; sourceTree = "<group>"; };
 		FF2CD0581538AEDF00EC1063 /* libIRSlidingSplitViewController.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libIRSlidingSplitViewController.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		FFB5724D15C1239500333CFF /* IRSlidingPanGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IRSlidingPanGestureRecognizer.h; path = IRSlidingSplitViewController/IRSlidingPanGestureRecognizer.h; sourceTree = "<group>"; };
+		FFB5724E15C1239500333CFF /* IRSlidingPanGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IRSlidingPanGestureRecognizer.m; path = IRSlidingSplitViewController/IRSlidingPanGestureRecognizer.m; sourceTree = "<group>"; };
+		FFB5725215C1274B00333CFF /* IRSlidingPanGestureRecognizerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = IRSlidingPanGestureRecognizerDelegate.h; path = IRSlidingSplitViewController/IRSlidingPanGestureRecognizerDelegate.h; sourceTree = "<group>"; };
 		FFC2E56815A96FCB0081D0E4 /* IRSlidingSplitViewControllerSubclass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IRSlidingSplitViewControllerSubclass.h; path = IRSlidingSplitViewController/IRSlidingSplitViewControllerSubclass.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -45,6 +50,9 @@
 				FF2CD0011538A20A00EC1063 /* IRSlidingSplitViewController.h */,
 				FF2CD0021538A20A00EC1063 /* IRSlidingSplitViewController.m */,
 				FFC2E56815A96FCB0081D0E4 /* IRSlidingSplitViewControllerSubclass.h */,
+				FFB5724D15C1239500333CFF /* IRSlidingPanGestureRecognizer.h */,
+				FFB5724E15C1239500333CFF /* IRSlidingPanGestureRecognizer.m */,
+				FFB5725215C1274B00333CFF /* IRSlidingPanGestureRecognizerDelegate.h */,
 				FF2CD0241538AD1E00EC1063 /* IRSlidingSplitViewController-Prefix.pch */,
 				FF2CCFE91538A1CB00EC1063 /* Frameworks */,
 				FF2CD05B1538AEF100EC1063 /* Products */,
@@ -77,6 +85,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FFC2E56915A96FCB0081D0E4 /* IRSlidingSplitViewControllerSubclass.h in Headers */,
+				FFB5724F15C1239500333CFF /* IRSlidingPanGestureRecognizer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -132,6 +141,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FF2CD06A1538AF4B00EC1063 /* IRSlidingSplitViewController.m in Sources */,
+				FFB5725015C1239500333CFF /* IRSlidingPanGestureRecognizer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

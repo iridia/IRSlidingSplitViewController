@@ -7,8 +7,10 @@
 //
 
 #import "IRSlidingSplitViewController.h"
+#import "IRSlidingPanGestureRecognizer.h"
 
-@interface IRSlidingSplitViewController () <UIGestureRecognizerDelegate>
+
+@interface IRSlidingSplitViewController () <UIGestureRecognizerDelegate, IRSlidingPanGestureRecognizerDelegate>
 
 - (CGRect) rectForMasterView;	//	always self.view.bounds
 - (CGRect) rectForDetailView;	//	self.view.bounds + { 200.0f, 0.0f } offset if showingMasterViewController

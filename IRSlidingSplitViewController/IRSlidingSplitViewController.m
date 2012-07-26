@@ -10,6 +10,8 @@
 
 #import "IRSlidingSplitViewController.h"
 #import "IRSlidingSplitViewControllerSubclass.h"
+#import "IRSlidingPanGestureRecognizer.h"
+
 
 @implementation IRSlidingSplitViewController
 @synthesize showingMasterViewController = _showingMasterViewController;
@@ -176,7 +178,7 @@
 	if (_panGestureRecognizer)
 		return _panGestureRecognizer;
 	
-	_panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
+	_panGestureRecognizer = [[IRSlidingPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
 	_panGestureRecognizer.delegate = self;
 	_panGestureRecognizer.cancelsTouchesInView = YES;
 
@@ -247,6 +249,24 @@
 	}
 	
 	return YES;
+
+}
+
+- (BOOL) slidingPanGestureRecognizer:(IRSlidingPanGestureRecognizer *)recognizer canPreventGestureRecognizer:(UIGestureRecognizer *)otherRecognizer proposedAnswer:(BOOL)superAnswer {
+
+	if ([otherRecognizer.view isDescendantOfView:self.masterViewController.view])
+		return YES;
+	
+	return superAnswer;
+
+}
+
+- (BOOL) slidingPanGestureRecognizer:(IRSlidingPanGestureRecognizer *)recognizer canBePreventedByGestureRecognizer:(UIGestureRecognizer *)otherRecognizer proposedAnswer:(BOOL)superAnswer {
+	
+	if ([otherRecognizer.view isDescendantOfView:self.masterViewController.view])
+		return NO;
+	
+	return superAnswer;
 
 }
 
