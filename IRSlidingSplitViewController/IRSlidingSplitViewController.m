@@ -344,14 +344,24 @@
 			CGRect desiredDetailRect = [self rectForDetailView];
 			
 			if (!CGRectEqualToRect(detailRect, desiredDetailRect)) {
-
-				[UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionAllowUserInteraction animations:^{
-				
-					self.detailViewController.view.frame = [self rectForDetailView];
-					[self layoutViews];
-
-				} completion:nil];
 			
+				UIDeviceOrientation const deviceOrientation = [UIDevice currentDevice].orientation;
+				UIInterfaceOrientation const interfaceOrientation = self.interfaceOrientation;
+				
+				if (deviceOrientation != (UIDeviceOrientation)interfaceOrientation) {
+				
+					[UIViewController attemptRotationToDeviceOrientation];
+				
+				} else {
+				
+					[UIView animateWithDuration:0.3f delay:0 options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionAllowUserInteraction animations:^{
+					
+						[self layoutViews];
+
+					} completion:nil];
+
+				}
+				
 			}
 
 			break;
@@ -426,18 +436,6 @@
 	
 }
 
-- (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
-
-	if (!self.masterViewController || !self.detailViewController)
-		return YES;
-
-	BOOL masterVCRotatable = [self.masterViewController shouldAutorotateToInterfaceOrientation:toInterfaceOrientation];
-	BOOL detailVCRotatable = [self.detailViewController shouldAutorotateToInterfaceOrientation:toInterfaceOrientation];
-
-	return masterVCRotatable && detailVCRotatable;
-
-}
-
 - (void) configureMasterView:(UIView *)view {
 
 	//	For subclasses
@@ -447,6 +445,41 @@
 - (void) configureDetailView:(UIView *)view {
 
 	//	For subclasses
+
+}
+
+- (BOOL) childViewControllersAllowAutoRotationToInterfaceOrientation:(UIInterfaceOrientation)toOrientation {
+
+	if (!self.masterViewController || !self.detailViewController)
+		return YES;
+	
+	BOOL masterVCRotatable = [self.masterViewController shouldAutorotateToInterfaceOrientation:toOrientation];
+	BOOL detailVCRotatable = [self.detailViewController shouldAutorotateToInterfaceOrientation:toOrientation];
+
+	return masterVCRotatable && detailVCRotatable;
+	
+}
+
+- (BOOL) isPanning {
+
+	return (self.panGestureRecognizer.state == UIGestureRecognizerStateChanged);
+
+}
+
+- (BOOL) shouldAutorotate {
+
+	return ![self isPanning];
+
+}
+
+- (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+
+	BOOL childrenRotatable = [self childViewControllersAllowAutoRotationToInterfaceOrientation:toInterfaceOrientation];
+
+	if (childrenRotatable && [self isPanning])
+		return (self.interfaceOrientation == toInterfaceOrientation);
+	
+	return childrenRotatable;
 
 }
 
