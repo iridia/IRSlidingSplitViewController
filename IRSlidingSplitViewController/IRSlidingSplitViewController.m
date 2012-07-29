@@ -345,23 +345,30 @@
 			
 			if (!CGRectEqualToRect(detailRect, desiredDetailRect)) {
 			
-				UIDeviceOrientation const deviceOrientation = [UIDevice currentDevice].orientation;
-				UIInterfaceOrientation const interfaceOrientation = self.interfaceOrientation;
+				BOOL (^orientationsMatch)(void) = ^ {
+
+					UIDeviceOrientation const deviceOrientation = [UIDevice currentDevice].orientation;
+					UIInterfaceOrientation const interfaceOrientation = self.interfaceOrientation;
+					
+					return (BOOL)(deviceOrientation == (UIDeviceOrientation)interfaceOrientation);
 				
-				if (deviceOrientation != (UIDeviceOrientation)interfaceOrientation) {
+				};
+			
+				if (!orientationsMatch()) {
 				
 					[UIViewController attemptRotationToDeviceOrientation];
-				
-				} else {
-				
-					[UIView animateWithDuration:0.3f delay:0 options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionAllowUserInteraction animations:^{
 					
-						[self layoutViews];
-
-					} completion:nil];
-
+					if (orientationsMatch())
+						break;
+				
 				}
 				
+				[UIView animateWithDuration:0.3f delay:0 options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionAllowUserInteraction animations:^{
+				
+					[self layoutViews];
+
+				} completion:nil];
+
 			}
 
 			break;
