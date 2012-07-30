@@ -96,7 +96,8 @@
 	
 	[self didChangeValueForKey:@"masterViewController"];
 	
-	[self layoutViews];
+	if (self.isViewLoaded)
+		[self layoutViews];
 	
 	if (callback)
 		callback(YES);
@@ -133,7 +134,8 @@
 
 	[self didChangeValueForKey:@"detailViewController"];
 	
-	[self layoutViews];
+	if (self.isViewLoaded)
+		[self layoutViews];
 	
 	if (callback)
 		callback(YES);
@@ -422,7 +424,6 @@
 - (void) viewWillAppear:(BOOL)animated {
 
 	[super viewWillAppear:animated];
-	
 	[self layoutViews];
 
 }
