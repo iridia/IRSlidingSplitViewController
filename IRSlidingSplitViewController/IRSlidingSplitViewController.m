@@ -81,15 +81,15 @@
 	
 	[_masterViewController willMoveToParentViewController:nil];
 	[_masterViewController removeFromParentViewController];
-	[_masterViewController.view removeFromSuperview];
+	
+	if ([_masterViewController isViewLoaded])
+		[_masterViewController.view removeFromSuperview];
 	
 	_masterViewController = toMasterVC;
 	
 	if (_masterViewController) {
 	
 		[self addChildViewController:_masterViewController];
-		[self configureMasterView:_masterViewController.view];
-		[self.view addSubview:_masterViewController.view];
 		[_masterViewController didMoveToParentViewController:self];
 	
 	}
@@ -118,15 +118,15 @@
 	
 	[_detailViewController willMoveToParentViewController:nil];
 	[_detailViewController removeFromParentViewController];
-	[_detailViewController.view removeFromSuperview];
+	
+	if ([_detailViewController isViewLoaded])
+		[_detailViewController.view removeFromSuperview];
 	
 	_detailViewController = toDetailVC;
 	
 	if (_detailViewController) {
 	
 		[self addChildViewController:_detailViewController];
-		[self configureDetailView:_detailViewController.view];
-		[self.view addSubview:_detailViewController.view];
 		[_detailViewController didMoveToParentViewController:self];
 	
 	}
@@ -431,6 +431,16 @@
 
 	UIView *masterView = self.masterViewController.view;
 	UIView *detailView = self.detailViewController.view;
+	
+	if (![masterView isDescendantOfView:self.view]) {
+		[self configureMasterView:masterView];
+		[self.view addSubview:masterView];
+	}
+	
+	if (![detailView isDescendantOfView:self.view]) {
+		[self configureDetailView:detailView];
+		[self.view addSubview:detailView];
+	}
 	
 	masterView.frame = [self rectForMasterView];
 	detailView.frame = [self rectForDetailView];
