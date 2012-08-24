@@ -165,10 +165,10 @@
 
 - (BOOL) shouldShowMasterViewControllerWithGestureTranslation:(CGPoint)translation velocity:(CGPoint)velocity {
 
-	if (!self.showingMasterViewController && velocity.x > 0)
+	if (!self.showingMasterViewController && velocity.y > 0)
 		return YES;
 		
-	if (self.showingMasterViewController && velocity.x < 0)
+	if (self.showingMasterViewController && velocity.y < 0)
 		return NO;
 	
 	return self.showingMasterViewController;
